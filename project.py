@@ -1,4 +1,6 @@
 #! /usr/bin/env python3
+# Charlie Conneely
+# G00348887
 
 def shunt(infix):
     # Convert input to a stack like list 
@@ -133,6 +135,21 @@ def regex_compile(infix):
     return nfa_stack.pop()
 
 
+def compareStringToNFA(nfa, s):
+    text = list(s)[::1]
+    while text:
+        c = text.pop()
+        if c == nfa.accept.edges[0]:
+            result = True
+        elif c == nfa.accept.edges[1]:
+            result = True
+        else:
+            result = False
+    return result            
+
+
+
+
 
 def match(regex, s):
     # returns true if regex matches the text
@@ -141,8 +158,12 @@ def match(regex, s):
     # compile regex into NFA
     nfa = regex_compile(regex)
     # check if nfa matches string s 
-    # still need to call a function to run the text through the nfa 
-    return nfa
+    # function to run the text through the nfa
+    result = compareStringToNFA(nfa, s)
+    return result
 
-print(match("a.b|b*", "bbbb"))
-print("Code executing")
+result = match("a.b|b*", "bbbb")
+
+print("NFA: a.b|b*")
+print("String: bbbb")
+print("Result:" + str(result))
