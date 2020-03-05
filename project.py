@@ -136,15 +136,30 @@ def regex_compile(infix):
 
 
 def compareStringToNFA(nfa, s):
-    text = list(s)[::1]
+    currentState = {nfa.start}
+    result = False
+    text = list(s)[::-1]
+    nextState = set()
+ 
+    # trying to compare first character to any label to 
+    # find a match 
+
     while text:
         c = text.pop()
-        if c == nfa.accept.edges[0]:
-            result = True
-        elif c == nfa.accept.edges[1]:
-            result = True
-        else:
-            result = False
+        for state in currentState:
+            if state.label == None:
+                for nextEdges in state.edges:
+                    if nextEdges.label is not None:
+                        if nextEdges.label == c:
+                            print("one char match found")
+                            result = True
+
+            if state.label is not None:
+                for sEdges in state.edges:
+                    if sEdges.label == c:
+                        print("one char match found")
+                        result = True
+
     return result            
 
 
@@ -162,8 +177,10 @@ def match(regex, s):
     result = compareStringToNFA(nfa, s)
     return result
 
-result = match("a.b|b*", "bbbb")
+inputString = input("Enter your string: ")
+
+result = match("a.b|b*", inputString)
 
 print("NFA: a.b|b*")
-print("String: bbbb")
-print("Result:" + str(result))
+print("String: ", inputString)
+print("Result is: ", str(result))
