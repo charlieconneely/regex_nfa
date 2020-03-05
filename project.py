@@ -134,31 +134,49 @@ def regex_compile(infix):
     # NFA should contain just one NFA 
     return nfa_stack.pop()
 
+def loopForEpsilons(state, checkedStates):
+    # check if state hasn't already been looped through
+    if state not in checkedStates:
+        checkedStates.add(state)
+
+        if state.label == None:
+            for moreEdges in state.edges:
+                loopForEpsilons(moreEdges, checkedStates)
+
+
+
+def loopMatches(state, c, newSet):
+    # if state has not been checked
+    if state not in newSet:
+        newSet.add(state)
+
+        # if the next label is equal to c and there are more edges to inspect   
+        if state.label == c and len(state.edges) is not 0:
+            for moreEdges in state.edges:
+                loopMatches(moreEdges, c, newSet)
+
+
 
 def compareStringToNFA(nfa, s):
-    currentState = {nfa.start}
+
     result = False
     text = list(s)[::-1]
     nextState = set()
+    checkedStates = set()
  
-    # trying to compare first character to any label to 
-    # find a match 
+    loopForEpsilons(nfa.start, checkedStates)
 
     while text:
         c = text.pop()
-        for state in currentState:
-            if state.label == None:
-                for nextEdges in state.edges:
-                    if nextEdges.label is not None:
-                        if nextEdges.label == c:
-                            print("one char match found")
-                            result = True
 
+        newSet = set()
+
+        for state in checkedStates:
             if state.label is not None:
-                for sEdges in state.edges:
-                    if sEdges.label == c:
-                        print("one char match found")
-                        result = True
+                loopMatches(state, c, newSet)
+    
+    if nfa.accept in newSet:
+        result = True
 
     return result            
 
