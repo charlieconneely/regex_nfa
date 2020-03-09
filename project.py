@@ -134,15 +134,41 @@ def regex_compile(infix):
     # NFA should contain just one NFA 
     return nfa_stack.pop()
 
-def loopForEpsilons(state, checkedStates):
+def loopForEpsilons(state, eStates):
     # check if state hasn't already been looped through
-    if state not in checkedStates:
-        checkedStates.add(state)
+    if state not in eStates:
+        eStates.add(state)
         if state.label is None:
             for moreEdges in state.edges:
-                loopForEpsilons(moreEdges, checkedStates)
+                loopForEpsilons(moreEdges, eStates)
 
-    return checkedStates
+
+def loopForMatches(state, mStates, c):
+    # check is state hasn't already been looped through
+    if state not in mStates:
+        mStates.add(state)
+        for states in mStates:
+            if states.label is not None:
+                if states.label == c:
+                    for moreEdges in states.edges:
+                        loopForMatches(moreEdges, mStates, c)
+
+
+def loopEStatesForMatches(eStates, mStates, c):
+  
+    for states in eStates:
+        if states.label is not None:
+            for moreEdges in states.edges:
+                loopForMatches(moreEdges, mStates, c)
+
+def loopMStatesForEpsilons(mStates, eStates):
+    for states in mStates:
+        if states.label is None:
+            for moreEdges in states.edges:
+                loopForEpsilons(moreEdges, eStates)
+
+
+
 
 
 def compareStringToNFA(nfa, s):
@@ -150,39 +176,35 @@ def compareStringToNFA(nfa, s):
     result = False
     # create list of chars from string
     text = list(s)[::-1]
-    activeStates = set()
-    checkedStates = set()
+    eStates = set()
+    mStates = set()
     allStates = set()
  
     # run through epsilons and add all states to set 
-    checkedStates = loopForEpsilons(nfa.start, checkedStates)
-    
-    # add contents of set to new set of all states 
-    for x in checkedStates:
-        allStates.add(x)
+    loopForEpsilons(nfa.start, eStates)  
     
     # run through char list
     while text:
-        # set actives states to null
-        activeStates = set() 
         # pop one off the top
         c = text.pop()
-        # run through checked states for labels that aren't epsilon
-        for states in checkedStates:
-            if states.label is not None:
-                # if label matches the current character
-                if states.label == c:
-                    # run through edges coming form this state 
-                    for x in states.edges:
-                        # add proceding states to set activeStates
-                        activeStates = loopForEpsilons(x, activeStates)
-        
-        # add contents of actives states to allStates
-        for x in activeStates:
-            allStates.add(x)
-               
-        
-    # if the accept state is within the set of states
+
+        # search from beginning for matching labels
+        loopForMatches(nfa.start, mStates, c)
+
+        # search through eStates for matching labels
+        loopEStatesForMatches(eStates, mStates, c)
+
+        # search through mStates for epsilons
+        loopMStatesForEpsilons(mStates, eStates)
+
+
+        for x in mStates:
+            if x not in allStates:
+                allStates.add(x)
+        for i in eStates:
+            if i not in allStates:
+                allStates.add(i)
+
     if nfa.accept in allStates:
         result = True
 
