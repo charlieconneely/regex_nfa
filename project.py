@@ -134,41 +134,20 @@ def regex_compile(infix):
     # NFA should contain just one NFA 
     return nfa_stack.pop()
 
-def loopForEpsilons(state, eStates):
+def loopForEpsilons(state, current):
     # check if state hasn't already been looped through
-    if state not in eStates:
-        eStates.add(state)
+    if state not in current:
+        current.add(state)
         if state.label is None:
-           # eStates.add(state)
             for moreEdges in state.edges:
-                loopForEpsilons(moreEdges, eStates)
+                loopForEpsilons(moreEdges, current)
 
 
-def loopForMatches(state, mStates, c):
-    # check is state hasn't already been looped through
-    if state not in mStates:
+def loopForMatches(prev, current, c):
+    for state in prev:
         if state.label is not None:
             if state.label == c:
-                mStates.add(state)
-                for moreEdges in states.edges:
-                    loopForMatches(moreEdges, mStates, c)
-
-
-def loopEStatesForMatches(eStates, mStates, c):
-  
-    for states in eStates:
-        if states.label is not None:
-            for moreEdges in states.edges:
-                loopForMatches(moreEdges, mStates, c)
-
-def loopMStatesForEpsilons(mStates, eStates):
-    for states in mStates:
-        if states.label is None:
-            for moreEdges in states.edges:
-                loopForEpsilons(moreEdges, eStates)
-
-
-
+                loopForEpsilons(state.edges[0], current)
 
 
 def compareStringToNFA(nfa, s):
@@ -176,38 +155,25 @@ def compareStringToNFA(nfa, s):
     result = False
     # create list of chars from string
     text = list(s)[::-1]
-    eStates = set()
-    mStates = set()
+    current = set()
+    prev = set()
     allStates = set()
  
     # run through epsilons and add all states to set 
-    loopForEpsilons(nfa.start, eStates)  
+    loopForEpsilons(nfa.start, current)  
     
     # run through char list
     while text:
-        mStates = set()
+        prev = current
+        current = set()
         # pop one off the top
         c = text.pop()
 
         # search from beginning for matching labels
-        loopForMatches(nfa.start, mStates, c)
-
-        # search through eStates for matching labels
-        loopEStatesForMatches(eStates, mStates, c)
-
-        # search through mStates for epsilons
-        loopMStatesForEpsilons(mStates, eStates)
+        loopForMatches(prev, current, c)
 
 
-        for x in mStates:
-            if x not in allStates:
-                allStates.add(x)
-        for i in eStates:
-            if i not in allStates:
-                allStates.add(i)
-
-
-    if nfa.accept in allStates:
+    if nfa.accept in current:
         result = True
 
     return result            
@@ -228,9 +194,10 @@ def match(regex, s):
     return result
 
 inputString = input("Enter your string: ")
+inputRegex = input("Enter your regular expression: ")
 
-result = match("a|c", inputString)
+result = match(inputRegex, inputString)
 
-print("NFA: a|c")
+print("Regex: ", inputRegex)
 print("String: ", inputString)
 print("Result is: ", str(result))
