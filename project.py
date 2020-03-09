@@ -13,7 +13,7 @@ def shunt(infix):
     postfix = []
 
     # Operator precedence
-    prec = {'*': 100, '.': 80, '|': 60, ')': 40, '(': 20}
+    prec = {'*': 100, '?': 90, '.': 80, '|': 60, ')': 40, '(': 20}
 
     # Loop through the input one character at a time
     while infix:
@@ -122,6 +122,15 @@ def regex_compile(infix):
             # point the arrows
             frag.accept.edges = [frag.start, accept]
             # Create new instance of fragment
+            newFrag = Fragment(start, accept)
+        elif c == '?':
+            # Zero or one 
+            frag = nfa_stack.pop()
+            # create new start and accept states
+            accept = State()
+            start = State(edges=[frag.start, accept])
+            frag.accept.edges = [accept]
+            # untested
             newFrag = Fragment(start, accept)
         else:
             accept = State()
