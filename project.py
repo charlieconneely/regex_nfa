@@ -139,6 +139,7 @@ def loopForEpsilons(state, eStates):
     if state not in eStates:
         eStates.add(state)
         if state.label is None:
+           # eStates.add(state)
             for moreEdges in state.edges:
                 loopForEpsilons(moreEdges, eStates)
 
@@ -146,12 +147,11 @@ def loopForEpsilons(state, eStates):
 def loopForMatches(state, mStates, c):
     # check is state hasn't already been looped through
     if state not in mStates:
-        mStates.add(state)
-        for states in mStates:
-            if states.label is not None:
-                if states.label == c:
-                    for moreEdges in states.edges:
-                        loopForMatches(moreEdges, mStates, c)
+        if state.label is not None:
+            if state.label == c:
+                mStates.add(state)
+                for moreEdges in states.edges:
+                    loopForMatches(moreEdges, mStates, c)
 
 
 def loopEStatesForMatches(eStates, mStates, c):
@@ -185,6 +185,7 @@ def compareStringToNFA(nfa, s):
     
     # run through char list
     while text:
+        mStates = set()
         # pop one off the top
         c = text.pop()
 
@@ -204,6 +205,7 @@ def compareStringToNFA(nfa, s):
         for i in eStates:
             if i not in allStates:
                 allStates.add(i)
+
 
     if nfa.accept in allStates:
         result = True
