@@ -136,6 +136,7 @@ def regex_compile(infix):
             newFrag = Fragment(start, accept)
         elif c == '+':
             # One or more 
+            # needs more testing
             # so far working but no different from * fragment 
             frag = nfa_stack.pop()
             # create new start and accept states
