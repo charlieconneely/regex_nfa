@@ -124,13 +124,25 @@ def regex_compile(infix):
             # Create new instance of fragment
             newFrag = Fragment(start, accept)
         elif c == '?':
+            # links to diagrams of ? and + nfa fragments 
+            # https://medium.com/@phanindramoganti/regex-under-the-hood-implementing-a-simple-regex-compiler-in-go-ef2af5c6079
             # Zero or one 
             frag = nfa_stack.pop()
             # create new start and accept states
             accept = State()
             start = State(edges=[frag.start, accept])
             frag.accept.edges = [accept]
-            # untested
+            # create new instance of fragment
+            newFrag = Fragment(start, accept)
+        elif c == '+':
+            # One or more 
+            # so far working but no different from * fragment 
+            frag = nfa_stack.pop()
+            # create new start and accept states
+            accept = State()
+            start = State(edges=[frag.start, accept])
+            frag.accept.edges = [frag.start, accept]
+            # create new instance of fragment
             newFrag = Fragment(start, accept)
         else:
             accept = State()
