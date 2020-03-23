@@ -3,6 +3,16 @@
 # G00348887
 
 def shunt(infix):
+    """
+    Create an postfix regular expression from it's infix."
+  
+    Parameters:
+    arg1 (String): Infix regular expression.
+
+    Returns:
+    String: The postfix equivalent.
+    """
+
     # Convert input to a stack like list 
     infix = list(infix)[::-1]
 
@@ -13,7 +23,7 @@ def shunt(infix):
     postfix = []
 
     # Operator precedence
-    prec = {'*': 100, '?': 90, '.': 80, '|': 60, ')': 40, '(': 20}
+    prec = {'*': 100, '+': 90, '.': 80, '|': 60, ')': 40, '(': 20}
 
     # Loop through the input one character at a time
     while infix:
@@ -36,6 +46,7 @@ def shunt(infix):
             # Push c to the opers stack
             opers.append(c)
         else:
+            # push the character to the output 
             postfix.append(c)
 
     # Pop all operators to the output
@@ -49,43 +60,46 @@ def shunt(infix):
 
 
 # ========================
-# Thompsons's Classes 18/02
+# Thompsons's Classes 
 # ========================
 
 class State:
-    edges = []
-    # label for arrows - None = epsilon
-    label = None
-
-    # Constructor
+    """A state with 1 or 2 edges, all edges labelled by label."""
+    # Constructor for the class
     def __init__(self, label=None, edges=[]):
+         # label for arrows - None = epsilon
         self.label = label
+        # Every state has 0, 1 or 2 edges from it
         self.edges = edges
 
 
 class Fragment:
-    # Start state of NFA fragment
-    start = None
-    # Accept state of NFA fragment
-    accept = None
-
+    """An NFA fragment with a start and accept state."""
     # Constructor
     def __init__(self, start, accept):
         self.start = start
         self.accept = accept
 
-# =================
-# Thompson's Classes
-# =================
-
-
 
 def regex_compile(infix):
+    """
+    Create an NFA fragment representing the infix regular expression."
+  
+    Parameters:
+    arg1 (String): Infix regular expression.
+
+    Returns:
+    Fragment: NFA fragment representing the regular expression
+    """
+    
+    # Convert the infix to postfix
     postfix = shunt(infix)
+    # Create a stack from the postfix 
     postfix = list(postfix)[::-1]
-
+    # Stack for NFA fragments
     nfa_stack = []
-
+    
+    # Run through postfix stack
     while postfix:
         # Pop a character from postfix 
         c = postfix.pop()
@@ -96,10 +110,10 @@ def regex_compile(infix):
             frag2 = nfa_stack.pop()
             # point frag2's accept state at frag1's start state
             frag2.accept.edges.append(frag1.start)
-            
-            # Create new instance of Fragment to represent the new NFA 
-            newFrag = Fragment(frag2.start, frag1.accept)
-            # Push the new NFA to the NFA stack 
+            # new start state is frag2's start
+            start = frag2.start
+            # new accept state is frag1's accept
+            accept = frag1.accept
         elif c == '|':
             # or
             # Pop 2 fragments off the stack
@@ -112,7 +126,6 @@ def regex_compile(infix):
             # Point the old accept states at the new one
             frag2.accept.edges.append(accept)
             frag1.accept.edges.append(accept)
-            newFrag = Fragment(start, accept)
         elif c == '*':
             # Pop a single fragment off the stack 
             frag = nfa_stack.pop()
@@ -121,35 +134,22 @@ def regex_compile(infix):
             start = State(edges=[frag.start, accept])
             # point the arrows
             frag.accept.edges = [frag.start, accept]
-            # Create new instance of fragment
-            newFrag = Fragment(start, accept)
-        elif c == '?':
-            # links to diagrams of ? and + nfa fragments 
-            # https://medium.com/@phanindramoganti/regex-under-the-hood-implementing-a-simple-regex-compiler-in-go-ef2af5c6079
-            # Zero or one 
-            frag = nfa_stack.pop()
-            # create new start and accept states
-            accept = State()
-            start = State(edges=[frag.start, accept])
-            frag.accept.edges = [accept]
-            # create new instance of fragment
-            newFrag = Fragment(start, accept)
         elif c == '+':
-            # One or more 
-            # needs more testing
+            # link to diagram example of + nfa  
+            # https://medium.com/@phanindramoganti/regex-under-the-hood-implementing-a-simple-regex-compiler-in-go-ef2af5c6079
+            # One or more
             # so far working but no different from * fragment 
             frag = nfa_stack.pop()
             # create new start and accept states
             accept = State()
             start = State(edges=[frag.start, accept])
             frag.accept.edges = [frag.start, accept]
-            # create new instance of fragment
-            newFrag = Fragment(start, accept)
         else:
             accept = State()
             start = State(label=c, edges=[accept])
-            newFrag = Fragment(start, accept)
 
+        # Create new instance of Fragment to represent the new NFA 
+        newFrag = Fragment(start, accept)
         # Push the new NFA to the stack 
         nfa_stack.append(newFrag)
 
@@ -157,6 +157,14 @@ def regex_compile(infix):
     return nfa_stack.pop()
 
 def loopForEpsilons(state, current):
+    """
+    Loop through NFA for edges marked Epsilon and add them to a set
+
+    Parameters:
+    arg1 (Fragment): Collection of NFA Fragments.
+    arg2 (set): Set containing States that have been checked
+
+    """
     # check if state hasn't already been looped through
     if state not in current:
         current.add(state)
@@ -166,6 +174,14 @@ def loopForEpsilons(state, current):
 
 
 def loopForMatches(prev, current, c):
+    """
+    Loop through NFA for edges labelled with the current character and add that state to a set
+
+    Parameters:
+    arg1 (Fragment): Collection of NFA Fragments.
+    arg2 (set): Set containing States that have been checked
+
+    """
     for state in prev:
         if state.label is not None:
             if state.label == c:
@@ -173,6 +189,16 @@ def loopForMatches(prev, current, c):
 
 
 def compareStringToNFA(nfa, s):
+    """
+    Run through NFA to check if it matches the string
+
+    Parameters:
+    arg1 (Fragment): Collection of NFA Fragments.
+    arg2 (String): String to be checked against regular expression
+
+    Returns:
+    bool: True if the string suits the regular expression - False otherwise
+    """
 
     result = False
     # create list of chars from string
@@ -215,11 +241,12 @@ def match(regex, s):
     result = compareStringToNFA(nfa, s)
     return result
 
-inputString = input("Enter your string: ")
-inputRegex = input("Enter your regular expression: ")
+#inputString = input("Enter your string: ")
+#inputRegex = input("Enter your regular expression: ")
 
-result = match(inputRegex, inputString)
+#result = match(inputRegex, inputString)
 
-print("Regex: ", inputRegex)
-print("String: ", inputString)
-print("Result is: ", str(result))
+if __name__ == "__main__":
+    print(match("a.b|b*", "bbbb"))
+#print("String: ", inputString)
+#print("Result is: ", str(result))
