@@ -1,6 +1,9 @@
-#! /usr/bin/env python3
 # Charlie Conneely
-# G00348887
+# Functions/Algorithms necessary to compare a string to a regex
+# using a non-deterministic finite automaton
+
+# Import classes for Thompson's Construction
+from thompsons import *
 
 def shunt(infix):
     """
@@ -58,29 +61,6 @@ def shunt(infix):
     return postfix
 
 
-
-# ========================
-# Thompsons's Classes 
-# ========================
-
-class State:
-    """A state with 1 or 2 edges, all edges labelled by label."""
-    # Constructor for the class
-    def __init__(self, label=None, edges=[]):
-         # label for arrows - None = epsilon
-        self.label = label
-        # Every state has 0, 1 or 2 edges from it
-        self.edges = edges
-
-
-class Fragment:
-    """An NFA fragment with a start and accept state."""
-    # Constructor
-    def __init__(self, start, accept):
-        self.start = start
-        self.accept = accept
-
-
 def regex_compile(infix):
     """
     Create an NFA fragment representing the infix regular expression."
@@ -130,7 +110,7 @@ def regex_compile(infix):
             # Pop a single fragment off the stack 
             frag = nfa_stack.pop()
             # create new start and accept states
-            accept = State()
+            accept = State() 
             start = State(edges=[frag.start, accept])
             # point the arrows
             frag.accept.edges = [frag.start, accept]
@@ -143,7 +123,7 @@ def regex_compile(infix):
             # create new start and accept states
             accept = State()
             start = State(edges=[frag.start, accept])
-            frag.accept.edges = [frag.start, accept]
+            frag.accept.edges = [accept]
         else:
             accept = State()
             start = State(label=c, edges=[accept])
@@ -175,18 +155,19 @@ def loopForEpsilons(state, current):
 
 def loopForMatches(prev, current, c):
     """
-    Loop through NFA for edges labelled with the current character and add that state to a set
+    Loop through NFA for labels that match the current character 
+    and add that state to a set
 
     Parameters:
     arg1 (Fragment): Collection of NFA Fragments.
     arg2 (set): Set containing States that have been checked
+    arg3 (char): A single character from the string of text
 
     """
     for state in prev:
         if state.label is not None:
             if state.label == c:
                 loopForEpsilons(state.edges[0], current)
-
 
 def compareStringToNFA(nfa, s):
     """
@@ -224,13 +205,21 @@ def compareStringToNFA(nfa, s):
     if nfa.accept in current:
         result = True
 
-    return result            
-
-
-
+    return result   
 
 
 def match(regex, s):
+    """
+    Convert regular expression to an nfa using the regex_compile method
+    Return result by calling a method to check if the string fits the nfa 
+
+    Parameters:
+    arg1 (String): The regular expression
+    arg2 (String): The text to be executed against the regular expression
+
+    Returns:
+    bool: True if the string suits the regular expression - False otherwise
+    """
     # returns true if regex matches the text
     # returns false otherwise
 
@@ -241,12 +230,9 @@ def match(regex, s):
     result = compareStringToNFA(nfa, s)
     return result
 
-#inputString = input("Enter your string: ")
-#inputRegex = input("Enter your regular expression: ")
-
-#result = match(inputRegex, inputString)
-
 if __name__ == "__main__":
-    print(match("a.b|b*", "bbbb"))
-#print("String: ", inputString)
-#print("Result is: ", str(result))
+    print("Please run the runner.py file if \
+you would like to execute this program.")
+
+    print(match("a.b|b*", "bbb"))
+
