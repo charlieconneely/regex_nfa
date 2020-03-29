@@ -9,7 +9,8 @@ tests = [
     ["a.b", "ab", True],
     ["b**", "b", True],
     ["b+", "aa", False],
-    ["b+", "b", True]
+    ["b+", "b", True],
+    ["b+", "bbb", True]
 ]
 
 for test in tests:
