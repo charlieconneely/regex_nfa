@@ -26,7 +26,7 @@ def shunt(infix):
     postfix = []
 
     # Operator precedence
-    prec = {'*': 100, '+': 90, '.': 80, '|': 60, ')': 40, '(': 20}
+    prec = {'*': 100, '.': 90, '+': 80, '|': 60, ')': 40, '(': 20}
 
     # Loop through the input one character at a time
     while infix:
