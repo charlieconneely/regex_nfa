@@ -26,7 +26,7 @@ def shunt(infix):
     postfix = []
 
     # Operator precedence
-    prec = {'*': 100, '.': 90, '+': 80, '|': 60, ')': 40, '(': 20}
+    prec = {'*': 100, '.': 90, '+': 80, '?': 70, '|': 60, ')': 40, '(': 20}
 
     # Loop through the input one character at a time
     while infix:
@@ -77,8 +77,8 @@ def regex_compile(infix):
     # Create a stack from the postfix 
     postfix = list(postfix)[::-1]
     # Stack for NFA fragments
-    nfa_stack = []
-    
+    nfa_stack = [] 
+
     # Run through postfix stack
     while postfix:
         # Pop a character from postfix 
@@ -123,7 +123,15 @@ def regex_compile(infix):
             # create new start and accept states
             accept = State()
             start = State(edges=[frag.start])
-            frag.accept.edges = [frag.start, accept]           
+            frag.accept.edges = [frag.start, accept]
+        elif c == '?':
+            # One or zero
+            frag = nfa_stack.pop()
+            # create new start and accept states
+            accept = State()
+            start = State(edges=[frag.start, accept])
+           # frag.start.edges.append(accept)
+            frag.accept.edges = [accept]         
         else:
             accept = State()
             start = State(label=c, edges=[accept])
