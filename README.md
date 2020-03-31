@@ -104,6 +104,19 @@ How each component of the program works:
 
 - shunt()
 --------------
-- 
+- This method utilises the shunting yard algorithm to convert a regular expression
+from infix notation to postfix notation. 
+- First the infix regex is converted to a stack in the form of a reversed list.
+- A while loop will then loop through each character in the list and determine, using if/elif
+statements the precedence of the character.
+- If the character is a regular letter/number, it will be added directly to the postfix array.
+- If the character if an operator, it will be added directly to the opers stack. However, if 
+another operator exists next on the opers list that has higher precedence to the current,
+the higher precedence operator will be removed from the stack and added to the postfix array.
+- Precednece is established using an array of objects with the operator and its corresponding
+integer value (higher for higher precedence operators).
+- After all characters have been read from the infix list and placed accordingly to their array,
+each operator on the opers array will be removed (one by one in a stack fashion) to the postfix list.
+- This postfix list will then be converted to a string and returned. 
 
 
