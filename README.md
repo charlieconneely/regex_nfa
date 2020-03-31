@@ -1,7 +1,6 @@
 # GraphTheoryProject 
 
-This repo contains a project (written in python) that will create a Non-Deterministic Finite Automaton (NFA),
- cabable of comparing a string of text to a regular expression (both entered as input by the user).
+This repo contains a project (written in python) that can create a Non-Deterministic Finite Automaton (NFA) from a regular expression and then use this NFA to check if any given string of text matches the regular expression.
 
 The program will:
 - Parse the regular expression from infix to postfix notation.
@@ -16,7 +15,7 @@ Dependencies needed in development:
 - gcc (Debian 8.3.0-6) 8.3.0
 - Wget 1.20.1
 
-========================================================================================
+===================================================================================
 
 Running the program from VI:
 - CD into the GraphTheoryProject folder containing the necessary files.
@@ -38,12 +37,13 @@ Testing the program:
 - The last param of the assert method is an if/else statement, 
 which will indicate to the user if a test case was successful/unsuccessful.
 
-========================================================================================
+===================================================================================
 
 Before I begin describing how the code works, here is the layout of the files and their contents:
 
 nfa.py:
-functions:
+--------------
+(functions)
 - shunt()
 - regex_compile()
 - loopForEpsilons()
@@ -54,16 +54,19 @@ functions:
 - An if statement to determine if nfa.py is run as main.
 
 runner.py:
+--------------
 This class just contains two variables for the regular expression and the text.
 The match function is imported from nfa.py, executed and the result printed to the console.
 
 testCases.py:
+--------------
 - An array of test cases.
 - A for loop to filter through them.
 - An assert method to test the match method (imported from nfa).
 
-thompsons.py
-classes:
+thompsons.py:
+--------------
+(classes)
 - State - representing the states of an NFA.
 - Fragment - representing the fragments of an NFA.
 
@@ -74,7 +77,8 @@ Description of how the program runs (sequentially):
 the match() function is called, which will take in these two parameters.
 - The first thing this function will do is call the regex_compile() method,
 taking the regular expressioon as a parameter. 
-- This method will take in the infix regular expression, and return the postfix. 
+- This method will then call the shunt() method, which will take in the infix 
+regular expression, and return the postfix. 
 - Next, inside regex_compile, the postfix string will then be converted to a stack.
 This stack of characters will then be examined by a series of if/elif statements.
 - These if/elif statements will use the characters from the postfix, along with the
@@ -94,5 +98,12 @@ of the NFA is present in this set. A boolean variable is then returned to the ma
 True if the accept state is present.
 - The match function will then return this boolean variable to the user: True if the string is a
 match, or False otherwise.
+
+
+How each component of the program works:
+
+- shunt()
+--------------
+- 
 
 

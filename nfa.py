@@ -122,8 +122,8 @@ def regex_compile(infix):
             frag = nfa_stack.pop()
             # create new start and accept states
             accept = State()
-            start = State(edges=[frag.start, accept])
-            frag.accept.edges = [accept]
+            start = State(edges=[frag.start])
+            frag.accept.edges = [frag.start, accept]           
         else:
             accept = State()
             start = State(label=c, edges=[accept])

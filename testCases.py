@@ -10,8 +10,12 @@ tests = [
     ["b**", "b", True],
     ["b+", "aa", False],
     ["b+", "b", True],
-    ["b+", "bbb", True]
+    ["b+", "bbb", True],
+    ["b+", "", False]
 ]
+
+result = nfa.match("a+", "")
+print(result)
 
 for test in tests:
     assert nfa.match(test[0], test[1]) == test[2], test[0] + (" should match  " \
