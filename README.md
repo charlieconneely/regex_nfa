@@ -71,52 +71,40 @@ thompsons.py:
 - Fragment - representing the fragments of an NFA.
 
 
-Description of how the program runs (sequentially):
-
+How the program works:
+---------------------
 - After the user has entered the string of text and the regular expression,
 the match() function is called, which will take in these two parameters.
 - The first thing this function will do is call the regex_compile() method,
 taking the regular expressioon as a parameter. 
-- This method will then call the shunt() method, which will take in the infix 
-regular expression, and return the postfix. 
+- This method will then call the shunt() method. This method utilises the shunting 
+yard algorithm to convert the regular expression from infix notation to postfix notation. 
 - Next, inside regex_compile, the postfix string will then be converted to a stack.
 This stack of characters will then be examined by a series of if/elif statements.
 - These if/elif statements will use the characters from the postfix, along with the
- Fragment and State classes to create the over-all NFA. 
+ Fragment and State classes to create the over-all NFA.
+- If the character in the regular expression is a letter, a simple fragment will be 
+created with a start and accept state, connected by an edge and a label marked with
+the character.
+- Or if the character in the regular expression is an operator (*, +...), then accordingly,
+a new start and accept state will be created and connected to the simple fragment, with 
+new edges, fragments etc., so that the new NFA will properly represent the operator and
+ correctly execute the string of text. 
 - The NFA is then returned to the match method and stored in a variable called 'nfa'.
 - Next in the match method, the compareStringToNFA() boolean method is called, taking
 the nfa and the string of text as parameters.
 - This method first calls the loopForEpsilons method, which takes in the start of the NFA
-and a set. It will proceed to loop through the NFA in search of epsilons (labels marked None)
-whilst adding these states to a set.
+and a set. It will proceed to loop through the NFA in search states connected by epsilons
+ (labels marked None) whilst adding these states to a set.
 - The compareStringToNFA method will then loop through each character in the string of
-text and call upon a function called loopForMatches(). This method will search the NFA
-for labels marked with the same character as the current character in execution.
-All of these states will also be added to a set.
+text and call upon a function called loopForMatches(). This method will search the through
+this list of states connected by labels marked with the same character as the current one in 
+execution. All of these new states that follow the matching labels will also be added to a set.
 - After this method, the compareStringToNFA method will then check if the accept state
-of the NFA is present in this set. A boolean variable is then returned to the match function,
-True if the accept state is present.
+of the NFA is present in this set of states. A boolean variable is then returned to the match 
+function (True if the accept state is present).
 - The match function will then return this boolean variable to the user: True if the string is a
 match, or False otherwise.
 
-
-How each component of the program works:
-
-- shunt()
---------------
-- This method utilises the shunting yard algorithm to convert a regular expression
-from infix notation to postfix notation. 
-- First the infix regex is converted to a stack in the form of a reversed list.
-- A while loop will then loop through each character in the list and determine, using if/elif
-statements the precedence of the character.
-- If the character is a regular letter/number, it will be added directly to the postfix array.
-- If the character if an operator, it will be added directly to the opers stack. However, if 
-another operator exists next on the opers list that has higher precedence to the current,
-the higher precedence operator will be removed from the stack and added to the postfix array.
-- Precednece is established using an array of objects with the operator and its corresponding
-integer value (higher for higher precedence operators).
-- After all characters have been read from the infix list and placed accordingly to their array,
-each operator on the opers array will be removed (one by one in a stack fashion) to the postfix list.
-- This postfix list will then be converted to a string and returned. 
 
 

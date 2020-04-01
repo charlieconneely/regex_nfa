@@ -130,7 +130,6 @@ def regex_compile(infix):
             # create new start and accept states
             accept = State()
             start = State(edges=[frag.start, accept])
-           # frag.start.edges.append(accept)
             frag.accept.edges = [accept]         
         else:
             accept = State()
@@ -155,15 +154,18 @@ def loopForEpsilons(state, current):
     """
     # check if state hasn't already been looped through
     if state not in current:
+        # add the state to the set
         current.add(state)
+        # If the label is an epsilon
         if state.label is None:
+            # loop through the connected edges for more epsilons
             for moreEdges in state.edges:
                 loopForEpsilons(moreEdges, current)
 
 
 def loopForMatches(prev, current, c):
     """
-    Loop through NFA for labels that match the current character 
+    Loop through set for labels that match the current character 
     and add that state to a set
 
     Parameters:
@@ -172,9 +174,12 @@ def loopForMatches(prev, current, c):
     arg3 (char): A single character from the string of text
 
     """
+    # loop through the set for matching labels
     for state in prev:
         if state.label is not None:
+            # if the label of the state matches the character
             if state.label == c:
+                # loop through states connected by epsilons
                 loopForEpsilons(state.edges[0], current)
 
 def compareStringToNFA(nfa, s):
@@ -209,7 +214,7 @@ def compareStringToNFA(nfa, s):
         # search from beginning for matching labels
         loopForMatches(prev, current, c)
 
-
+    # check if the nfa's accept state is in the set
     if nfa.accept in current:
         result = True
 
@@ -242,5 +247,5 @@ if __name__ == "__main__":
     print("Please run the runner.py file if \
 you would like to execute this program.")
 
-    print(match("a.b|b*", "bbb"))
+    
 

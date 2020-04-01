@@ -17,3 +17,7 @@ class Fragment:
     def __init__(self, start, accept):
         self.start = start
         self.accept = accept
+
+if __name__ == "__main__":
+    print("Please run the runner.py file if \
+you would like to execute this program.")
