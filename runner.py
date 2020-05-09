@@ -1,10 +1,17 @@
 # Charlie Conneely
 # Runner program 
 
+import argparse
 import nfa
 
-text = input("Please enter your string of text: ")
-regex = input("Please enter your regular expression: ")
+parser = argparse.ArgumentParser()
+parser.add_argument("text", help="The string of text", type=str)
+parser.add_argument("regex", help="The regular expression", type=str)
 
+args = parser.parse_args()
 
-print(nfa.match(regex, text))
+#text = input("Please enter your string of text: ")
+#regex = input("Please enter your regular expression: ")
+result = nfa.match(args.regex, args.text)
+
+print(result)
