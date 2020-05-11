@@ -7,7 +7,7 @@ from thompsons import *
 
 def shunt(infix):
     """
-    Create an postfix regular expression from it's infix."
+    Create a postfix regular expression from it's infix."
   
     Parameters:
     arg1 (String): Infix regular expression.

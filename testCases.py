@@ -3,7 +3,8 @@
 
 import nfa
 
-tests = [
+# Test cases for the match function
+matchTests = [
     ["a.b|b*", "bbbbb", True],
     ["a.b|b*", "bbx", False],
     ["a.b", "ab", True],
@@ -22,8 +23,24 @@ tests = [
     ["a?", "abc", False]
 ]
 
-for test in tests:
+# Test cases for the shunt function
+shuntTests = [
+    ["a.b", "ab."],
+    ["a|b", "ab|"],
+    ["(a?)|b", "a?b|"],
+    ["(a+).b", "a+b."],
+    ["a.(b|c)", "abc|."],
+    ["(a|b).b+", "ab|b.+"],
+    ["(a?)|(a+)", "a?a+|"],
+    ["((a|b).(a?))|((a+).(a.b))", "ab|a?.a+ab..|"]
+]
+
+# loop through test cases and assert each
+# nfa.match
+for test in matchTests:
     assert nfa.match(test[0], test[1]) == test[2], test[0] + (" should match  " \
             if test[2] else " should not match ") + test[1]
-
+# nfa.shunt
+for test in shuntTests:
+    assert nfa.shunt(test[0]) == test[1] 
 
