@@ -15,3 +15,11 @@ The NFA is created *from* the regular expression. So... \
 A regular expression (regex for short) is a special text string for describing a search pattern. For example, the regex "a*|b", when ran against a string of text, will check if the text is contains any amount of a characters *or* the b character. This is because the special character * represents *zero or any amount of* and | represents *or*.
 
 To become more familiar with regular expressions click [here](https://www.regular-expressions.info/quickstart.html) 
+
+***
+To simulate an NFA in my application, I needed to create two object classes: One for **States** and the other for **Fragments**.
+- Each **Fragment** has a start and end state (as with all NFAs).  
+- Each **States** has one or two edges (which lead to other states), if it has zero edges it should be the end state. Those edges have a label which denotes the condition - if the letter matches the label *or* if the label is an epsilon - the next state will be reached.    
+
+Below I provided a diagram of an NFA. You can find their representative objects in the [thompsons.py](./thompsons.py) class.
+![nfadiagram](/imgs/nfaDiagram.png)
