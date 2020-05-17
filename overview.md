@@ -1,6 +1,7 @@
 # Overview of my 3rd year Graph Theory project
 ## Charlie Conneely - G00348887
 
+### **Introduction**
 The purpose of this Python application is to create a Non-Deterministic Finite Automata (NFA) from a regular expression and then use this NFA to check if any given string of text matches the regular expression. 
 
 To understand exactly what that means, first let's ask: \
@@ -26,8 +27,10 @@ Below I provided a diagram of an NFA. You can find their representative objects 
 ***
 Before we create the NFA from the regular expression, we need to convert the regex from **infix** to **postfix**.   
 - **Infix** refers to an expression in the form a op b. When an operator is inbetween every pair of operands.   
-- **Postfix** refers to an expression in the form of a b op. When an operator is followed for every pair of operands.   
+- **Postfix** refers to an expression in the form of a b op. When an operator is followed for every pair of operands. 
+
 As humans we prefer to see the operator inbetween the operands (as with infix notation), as it's easier for us to interpret. However, postfix is more convenient for evaluating formulas on computers with stack.  
 To see how I converted the infix string to postfix using the shunting yard algorithm, please redirect your attention to the shunt method in the [nfa.py](./nfa.py) class.   
 For more info on infix/postfix notation and the shunting yard algorithm, please click [here](https://brilliant.org/wiki/shunting-yard-algorithm/).
 ***
+
