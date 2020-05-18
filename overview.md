@@ -51,5 +51,31 @@ To run the code:
 - The program will then ask you to enter the string of text e.g. "aaab"
 - Next you will be asked to enter the regular expression e.g. "a*"
 - The program will then return True or False depending on whether your string matches the regular expression.
+***
+### **How to test the program**
+- To test the program, I created a seperate python script file called [testCases.py](./testCases.py).
+- This file contains 2 arrays of test cases - one array of test cases for the shunt method, and another array of test cases for the match function. 
+- Both of these arrays were tested using the assert keyword. To familiarize yourself with the assert keyword click [here](https://www.w3schools.com/python/ref_keyword_assert.asp).
+- **Testing the shunt function**:
+  - Each test case in the array is it's own array in the format [String, String].
+  - The first string in the array represents the regular expression in *infix*.
+  - The second string represents what regular expression should look like in *postfix*. 
+  - The shunt function was imported from nfa.py. 
+  - The shunt function was then asserted for each test case in the array using a for loop.
+  - If the returned string from the shunt method matches the expected output, no error message will occur.
+
+- **Testing the match function**: 
+  - Each test case in the array is it's own array in the format [String, String, Boolean].
+  - The first string in the array represents the regular expression.
+  - The second string is text to which the regex will be compared.
+  - And the boolean value represents the expected result.
+  - The match function was imported from nfa.py
+  - The match function was then asserted for each test case in the array using a for loop.
+  - The last param of the assert method is an if/else statement, which will indicate to the user if a test case was successful/unsuccessful.
+  
+  To test out the shunt or match method yourself, simply add a similar object to either array. 
+  To run the tests, simply run the command "python3 testCases.py". 
+  *** 
+
 
 
