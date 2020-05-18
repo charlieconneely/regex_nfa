@@ -1,5 +1,5 @@
-# Overview of my 3rd year Graph Theory project
 ## Charlie Conneely - G00348887
+## Overview of my 3rd year Graph Theory project
 
 ### **Introduction**
 The purpose of this Python application is to create a Non-Deterministic Finite Automata (NFA) from a regular expression and then use this NFA to check if any given string of text matches the regular expression. 
@@ -17,6 +17,8 @@ A regular expression (regex for short) is a special text string for describing a
 
 To become more familiar with regular expressions click [here](https://www.regular-expressions.info/quickstart.html) 
 
+Let's consider for a moment that you are walking through a building that has signs at each new corridor that read - if you are so and so, you may/may not go this way *or* you should use this corridor instead. Eventually, if you suit all the conditions on the signs, you'll reach the end. In this analogy, you are the operand (letter/number) and this connection of corridors and signs is the NFA. The conditions and the layout of the corridors will be designed to represent the regular expression. 
+
 ***
 To simulate an NFA in my application, I needed to create two object classes: One for **States** and the other for **Fragments**.
 - Each **Fragment** has a start and end state (as with all NFAs).  
@@ -33,4 +35,21 @@ As humans we prefer to see the operator inbetween the operands (as with infix no
 To see how I converted the infix string to postfix using the shunting yard algorithm, please redirect your attention to the shunt method in the [nfa.py](./nfa.py) class.   
 For more info on infix/postfix notation and the shunting yard algorithm, please click [here](https://brilliant.org/wiki/shunting-yard-algorithm/).
 ***
+### **How to run the program**
+- When you have your virtual machine set up, the first command to run is "sudo apt update", this will go to the debian package list online for all available packages and download them.   
+To upgrade these packages run "sudo apt ugrade" 
+- If the command line editor vi is not already installed, you should install VI 8.1. 
+- You may also need to install:
+  - Python 2.7.16
+  - git: sudo apt install git
+  - A c compiler: sudo apt install build-essential
+  - File downloader: sudo apt install wget 
+
+After this installation process is finished use run "git clone <https://github.com/charlieconneely/GraphTheoryProject>". Next, go into the GraphTheoryProject directory (cd GraphTheoryProject).   
+To run the code:
+- Run "python3 runner.py" to execute the runner file.
+- The program will then ask you to enter the string of text e.g. "aaab"
+- Next you will be asked to enter the regular expression e.g. "a*"
+- The program will then return True or False depending on whether your string matches the regular expression.
+
 
