@@ -94,4 +94,11 @@ To run the tests, simply run the command `python3 testCases.py`
 
 Below, I have provided a diagram roughly illustrating the flow of the program:   
 ![diagram](./imgs/algorithm-diagram.PNG)
+***
+### **References**
+- To better understand how operators are represented with NFA graphs -  https://medium.com/@phanindramoganti/regex-under-the-hood-implementing-a-simple-regex-compiler-in-go-ef2af5c6079
+- For info on regular expressions, postfix and infix etc. - https://www.regular-expressions.info/
+- To practise regular expressions - https://alf.nu/RegexGolf
+- To better understand python - https://docs.python.org/3/
+
 
