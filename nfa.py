@@ -115,8 +115,7 @@ def regex_compile(infix):
             # point the arrows
             frag.accept.edges = [frag.start, accept]
         elif c == '+':
-            # link to diagram example of + nfa  
-            # https://medium.com/@phanindramoganti/regex-under-the-hood-implementing-a-simple-regex-compiler-in-go-ef2af5c6079
+            # link to diagram example of + nfa        
             # One or more
             # so far working but no different from * fragment 
             frag = nfa_stack.pop()
@@ -199,7 +198,6 @@ def compareStringToNFA(nfa, s):
     text = list(s)[::-1]
     current = set()
     prev = set()
-    allStates = set()
  
     # run through epsilons and add all states to set 
     loopForEpsilons(nfa.start, current)  

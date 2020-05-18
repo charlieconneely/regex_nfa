@@ -7,7 +7,9 @@ import nfa
 parser = argparse.ArgumentParser()
 group = parser.add_mutually_exclusive_group()
 
+# --verbose - for a more descriptive answer 
 group.add_argument("-v", "--verbose", action="store_true")
+# -- quiet - for a quick answer (just True or False)
 group.add_argument("-q", "--quiet", action="store_true")
 parser.add_argument("text", help="The string of text", type=str)
 parser.add_argument("regex", help="The regular expression", type=str)
