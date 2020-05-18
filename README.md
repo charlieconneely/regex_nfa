@@ -15,9 +15,9 @@ Dependencies needed in development:
 - gcc (Debian 8.3.0-6) 8.3.0
 - Wget 1.20.1
 
-===================================================================================
+***
 
-Running the program from VI:
+**Running the program from VI**:
 - CD into the GraphTheoryProject folder containing the necessary files.
 - Enter "python3 runner.py" to execute the runner file.
 - The program will then ask you to enter the string of text e.g. "aaab"
@@ -25,7 +25,7 @@ Running the program from VI:
 - The program will then return True or False depending on whether your string matches 
 the regular expression. 
 
-Testing the program:
+**Testing the program**:
 - To test the program, I created a seperate python script file called testCases.py
 - This file contains an array of test cases.
 - Each test case in the array is it's own array in the format [String, String, Boolean].
@@ -37,13 +37,12 @@ Testing the program:
 - The last param of the assert method is an if/else statement, 
 which will indicate to the user if a test case was successful/unsuccessful.
 
-===================================================================================
+***
 
 Before I begin describing how the code works, here is the layout of the files and their contents:
 
-nfa.py:
---------------
-(functions)
+**nfa.py**:   
+(*functions*)
 - shunt()
 - regex_compile()
 - loopForEpsilons()
@@ -53,26 +52,22 @@ nfa.py:
 
 - An if statement to determine if nfa.py is run as main.
 
-runner.py:
---------------
+**runner.py**:
 This class just contains two variables for the regular expression and the text.
 The match function is imported from nfa.py, executed and the result printed to the console.
 
-testCases.py:
---------------
+**testCases.py**:
 - An array of test cases.
 - A for loop to filter through them.
 - An assert method to test the match method (imported from nfa).
 
-thompsons.py:
---------------
-(classes)
+**thompsons.py**:   
+(*classes*)
 - State - representing the states of an NFA.
 - Fragment - representing the fragments of an NFA.
 
 
-How the program works:
----------------------
+### **How the program works**:
 - After the user has entered the string of text and the regular expression,
 the match() function is called, which will take in these two parameters.
 - The first thing this function will do is call the regex_compile() method,
