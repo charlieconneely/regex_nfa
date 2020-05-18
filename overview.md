@@ -13,7 +13,7 @@ For more information on NFA's click [here](https://www.tutorialspoint.com/automa
 
 The NFA is created *from* the regular expression. So... \
 **What is a regular expression?**  \
-A regular expression (regex for short) is a special text string for describing a search pattern. For example, the regex "a*|b", when ran against a string of text, will check if the text is contains any amount of a characters *or* the b character. This is because the special character * represents *zero or any amount of* and | represents *or*.
+A regular expression (regex for short) is a special text string for describing a search pattern. For example, the regex "a*|b", when ran against a string of text, will check if the text contains any amount of a characters *or* the b character. This is because the special character * represents *zero or any amount of* and | represents *or*.
 
 To become more familiar with regular expressions click [here](https://www.regular-expressions.info/quickstart.html) 
 
@@ -28,10 +28,10 @@ Below I provided a diagram of an NFA. You can find their representative objects 
 ![nfadiagram](/imgs/nfaDiagram.png)
 ***
 Before we create the NFA from the regular expression, we need to convert the regex from **infix** to **postfix**.   
-- **Infix** refers to an expression in the form a op b. When an operator is inbetween every pair of operands.   
+- **Infix** refers to an expression in the form a op b. When an operator is in between every pair of operands.   
 - **Postfix** refers to an expression in the form of a b op. When an operator is followed for every pair of operands. 
 
-As humans we prefer to see the operator inbetween the operands (as with infix notation), as it's easier for us to interpret. However, postfix is more convenient for evaluating formulas on computers with stack.  
+As humans we prefer to see the operator in between the operands (as with infix notation), as it's easier for us to interpret. However, postfix is more convenient for evaluating formulas on computers with stack.  
 To see how I converted the infix string to postfix using the shunting yard algorithm, please redirect your attention to the shunt method in the [nfa.py](./nfa.py) class.   
 For more info on infix/postfix notation and the shunting yard algorithm, please click [here](https://brilliant.org/wiki/shunting-yard-algorithm/).
 ***
@@ -53,9 +53,9 @@ To run the code:
 - The program will then return True or False depending on whether your string matches the regular expression.
 ***
 ### **How to test the program**
-- To test the program, I created a seperate python script file called [testCases.py](./testCases.py).
+- To test the program, I created a separate python script file called [testCases.py](./testCases.py).
 - This file contains 2 arrays of test cases - one array of test cases for the shunt method, and another array of test cases for the match function. 
-- Both of these arrays were tested using the `assert` keyword. To familiarize yourself with the **assert** keyword click [here](https://www.w3schools.com/python/ref_keyword_assert.asp).
+- Both arrays were tested using the `assert` keyword. To familiarize yourself with the **assert** keyword click [here](https://www.w3schools.com/python/ref_keyword_assert.asp).
 - **Testing the shunt function**:
   - Each test case in the array is it's own array in the format [String, String].
   - The first string in the array represents the regular expression in *infix*.
@@ -68,14 +68,30 @@ To run the code:
   - Each test case in the array is it's own array in the format [String, String, Boolean].
   - The first string in the array represents the regular expression.
   - The second string is text to which the regex will be compared.
-  - And the boolean value represents the expected result.
+  - And the Boolean value represents the expected result.
   - The match function was imported from [nfa.py](./nfa.py).
   - The match function was then asserted for each test case in the array using a for loop.
   - The last param of the assert method is an if/else statement, which will indicate to the user if a test case was successful/unsuccessful.
-  
-  To test out the shunt or match method yourself, simply add a similar object to either array. 
-  To run the tests, simply run the command `python3 testCases.py`
-  *** 
 
+To test out the shunt or match method yourself, simply add a similar object to either array. 
+To run the tests, simply run the command `python3 testCases.py`
+*** 
+### **Algorithm** 
+**How the program works**:
+- After the user has entered the string of text and the regular expression, the match() function is called, which will take in these two parameters.
+- The first thing this function will do is call the regex_compile() method, taking the regular expression as a parameter.
+- This method will then call the shunt() method. This method utilises the shunting yard algorithm to convert the regular expression from infix notation to postfix notation.
+- Next, inside regex_compile, the postfix string will then be converted to a stack. This stack of characters will then be examined by a series of if/elif statements.
+- These if/elif statements will use the characters from the postfix, along with the Fragment and State classes to create the over-all NFA.
+- If the character in the regular expression is a letter, a simple fragment will be created with a start and accept state, connected by an edge and a label marked with the character.
+- Or if the character in the regular expression is an operator (*, +...), then accordingly, a new start and accept state will be created and connected to the simple fragment, with new edges, fragments etc., so that the new NFA will properly represent the operator and correctly execute the string of text.
+- The NFA is then returned to the match method and stored in a variable called 'nfa'.
+- Next in the match method, the compareStringToNFA() Boolean method is called, taking the nfa and the string of text as parameters.
+- This method first calls the loopForEpsilons method, which takes in the start of the NFA and a set. It will proceed to loop through the NFA in search states connected by epsilons (labels marked None) whilst adding these states to a set.
+- The compareStringToNFA method will then loop through each character in the string of text and call upon a function called loopForMatches(). This method will search the through this list of states connected by labels marked with the same character as the current one in execution. All these new states that follow the matching labels will also be added to a set.
+- After this method, the compareStringToNFA method will then check if the accept state of the NFA is present in this set of states. A Boolean variable is then returned to the match function (True if the accept state is present).
+- The match function will then return this Boolean variable to the user: True if the string is a match, or False otherwise.
 
+Below, I have provided a diagram roughly illustrating the flow of the program:   
+![diagram](./imgs/algorithm-diagram.PNG)
 
