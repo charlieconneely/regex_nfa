@@ -36,18 +36,18 @@ To see how I converted the infix string to postfix using the shunting yard algor
 For more info on infix/postfix notation and the shunting yard algorithm, please click [here](https://brilliant.org/wiki/shunting-yard-algorithm/).
 ***
 ### **How to run the program**
-- When you have your virtual machine set up, the first command to run is "sudo apt update", this will go to the debian package list online for all available packages and download them.   
-To upgrade these packages run "sudo apt ugrade" 
+- When you have your virtual machine set up, the first command to run is `sudo apt update`, this will go to the debian package list online for all available packages and download them.   
+To upgrade these packages run `sudo apt ugrade` 
 - If the command line editor vi is not already installed, you should install VI 8.1. 
 - You may also need to install:
   - Python 2.7.16
-  - git: sudo apt install git
-  - A c compiler: sudo apt install build-essential
-  - File downloader: sudo apt install wget 
+  - git: `sudo apt install git`
+  - A c compiler: `sudo apt install build-essential`
+  - File downloader: `sudo apt install wget` 
 
-After this installation process is finished use run "git clone <https://github.com/charlieconneely/GraphTheoryProject>". Next, go into the GraphTheoryProject directory (cd GraphTheoryProject).   
+After this installation process is finished use run `git clone https://github.com/charlieconneely/GraphTheoryProject`. Next, go into the GraphTheoryProject directory (`cd GraphTheoryProject`).   
 To run the code:
-- Run "python3 runner.py" to execute the runner file.
+- Run `python3 runner.py` to execute the runner file.
 - The program will then ask you to enter the string of text e.g. "aaab"
 - Next you will be asked to enter the regular expression e.g. "a*"
 - The program will then return True or False depending on whether your string matches the regular expression.
@@ -55,12 +55,12 @@ To run the code:
 ### **How to test the program**
 - To test the program, I created a seperate python script file called [testCases.py](./testCases.py).
 - This file contains 2 arrays of test cases - one array of test cases for the shunt method, and another array of test cases for the match function. 
-- Both of these arrays were tested using the assert keyword. To familiarize yourself with the assert keyword click [here](https://www.w3schools.com/python/ref_keyword_assert.asp).
+- Both of these arrays were tested using the `assert` keyword. To familiarize yourself with the **assert** keyword click [here](https://www.w3schools.com/python/ref_keyword_assert.asp).
 - **Testing the shunt function**:
   - Each test case in the array is it's own array in the format [String, String].
   - The first string in the array represents the regular expression in *infix*.
   - The second string represents what regular expression should look like in *postfix*. 
-  - The shunt function was imported from nfa.py. 
+  - The shunt function was imported from [nfa.py](./nfa.py). 
   - The shunt function was then asserted for each test case in the array using a for loop.
   - If the returned string from the shunt method matches the expected output, no error message will occur.
 
@@ -69,12 +69,12 @@ To run the code:
   - The first string in the array represents the regular expression.
   - The second string is text to which the regex will be compared.
   - And the boolean value represents the expected result.
-  - The match function was imported from nfa.py
+  - The match function was imported from [nfa.py](./nfa.py).
   - The match function was then asserted for each test case in the array using a for loop.
   - The last param of the assert method is an if/else statement, which will indicate to the user if a test case was successful/unsuccessful.
   
   To test out the shunt or match method yourself, simply add a similar object to either array. 
-  To run the tests, simply run the command "python3 testCases.py". 
+  To run the tests, simply run the command `python3 testCases.py`
   *** 
 
 
