@@ -1,5 +1,4 @@
-## Charlie Conneely - G00348887
-## Overview of my 3rd year Graph Theory project
+## Charlie Conneely 
 
 ### **Introduction**
 The purpose of this Python application is to create a Non-Deterministic Finite Automata (NFA) from a regular expression and then use this NFA to check if any given string of text matches the regular expression. 
