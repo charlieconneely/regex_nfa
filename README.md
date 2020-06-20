@@ -1,4 +1,3 @@
-# GraphTheoryProject 
 
 This repo contains a project (written in python) that can create a Non-Deterministic Finite Automaton (NFA) from a regular expression and then use this NFA to check if any given string of text matches the regular expression.
 
